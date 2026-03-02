@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
             cursorOutline.animate({
                 left: `${posX}px`,
                 top: `${posY}px`
-            }, { duration: 500, fill: "forwards" });
+            }, { duration: 300, fill: "forwards" });
         }
     });
 
@@ -48,18 +48,25 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // 3. Scroll Progress Bar & Parallax Hero
+    // 3. Scroll Progress Bar & Parallax Hero (optimized with rAF)
     const scrollProgress = document.querySelector('.scroll-progress');
     const heroSlides = document.querySelector('.hero-slides');
+    let scrollTicking = false;
     window.addEventListener('scroll', () => {
-        const scrollPx = document.documentElement.scrollTop;
-        const winHeightPx = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-        const scrolled = (scrollPx / winHeightPx) * 100;
-        if (scrollProgress) scrollProgress.style.width = `${scrolled}%`;
+        if (!scrollTicking) {
+            window.requestAnimationFrame(() => {
+                const scrollPx = document.documentElement.scrollTop;
+                const winHeightPx = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (scrollPx / winHeightPx) * 100;
+                if (scrollProgress) scrollProgress.style.width = `${scrolled}%`;
 
-        // Parallax Effect
-        if (heroSlides && scrollPx < window.innerHeight) {
-            heroSlides.style.transform = `translateY(${scrollPx * 0.4}px)`;
+                // Parallax Effect
+                if (heroSlides && scrollPx < window.innerHeight) {
+                    heroSlides.style.transform = `translateY(${scrollPx * 0.4}px)`;
+                }
+                scrollTicking = false;
+            });
+            scrollTicking = true;
         }
     });
 
@@ -348,10 +355,10 @@ document.addEventListener('DOMContentLoaded', function () {
         particlesJS('particles-js', {
             "particles": {
                 "number": {
-                    "value": 60,
+                    "value": 25,
                     "density": {
                         "enable": true,
-                        "value_area": 800
+                        "value_area": 900
                     }
                 },
                 "color": {
@@ -375,13 +382,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     }
                 },
                 "size": {
-                    "value": 4,
+                    "value": 3,
                     "random": true,
                     "anim": {
-                        "enable": true,
-                        "speed": 2,
-                        "size_min": 0.1,
-                        "sync": false
+                        "enable": false
                     }
                 },
                 "line_linked": {
@@ -393,7 +397,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
                 "move": {
                     "enable": true,
-                    "speed": 2,
+                    "speed": 1.2,
                     "direction": "none",
                     "random": false,
                     "straight": false,
@@ -456,38 +460,14 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
-    window.addEventListener('scroll', scrollSpy);
-
-    // 8. Event Countdown Timer
-    function startCountdown() {
-        // Set your target event date here (Year, Month-1, Day, Hour, Min, Sec)
-        const eventDate = new Date('2026-04-01T08:00:00').getTime();
-
-        const timer = setInterval(() => {
-            const now = new Date().getTime();
-            const distance = eventDate - now;
-
-            if (distance < 0) {
-                clearInterval(timer);
-                document.getElementById('cd-days').innerText = '00';
-                document.getElementById('cd-hours').innerText = '00';
-                document.getElementById('cd-minutes').innerText = '00';
-                document.getElementById('cd-seconds').innerText = '00';
-                document.querySelector('.countdown-event-name').innerText = 'Event has started!';
-                return;
-            }
-
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            document.getElementById('cd-days').innerText = String(days).padStart(2, '0');
-            document.getElementById('cd-hours').innerText = String(hours).padStart(2, '0');
-            document.getElementById('cd-minutes').innerText = String(minutes).padStart(2, '0');
-            document.getElementById('cd-seconds').innerText = String(seconds).padStart(2, '0');
-        }, 1000);
-    }
-    startCountdown();
-
+    let spyTicking = false;
+    window.addEventListener('scroll', () => {
+        if (!spyTicking) {
+            window.requestAnimationFrame(() => {
+                scrollSpy();
+                spyTicking = false;
+            });
+            spyTicking = true;
+        }
+    });
 });
