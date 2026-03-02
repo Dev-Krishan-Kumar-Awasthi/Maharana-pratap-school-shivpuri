@@ -21,22 +21,22 @@
 ## 📸 Website Preview
 
 ### 🏠 Hero Banner
-![Hero Section](screenshots/hero.png)
+![Hero Section](hero.png)
 
 ### 📖 About & Statistics
-![About Section](screenshots/about.png)
+![About Section](about.png)
 
 ### 🏗️ Facilities
-![Facilities Section](screenshots/facilities.png)
+![Facilities Section](facilities.png)
 
 ### 🖼️ Gallery
-![Gallery Section](screenshots/gallery.png)
+![Gallery Section](gallery.png)
 
 ### 📞 Contact Us
-![Contact Section](screenshots/contact.png)
+![Contact Section](contact.png)
 
 ### 👨‍💻 Developer Info & Footer
-![Developer Section](screenshots/developer.png)
+![Developer Section](developer.png)
 
 ---
 
